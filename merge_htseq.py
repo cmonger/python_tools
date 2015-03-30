@@ -35,4 +35,13 @@ for gene in d[d.keys()[0]]:
 		f1.write(str(d[file][gene]) + '\t')
 	f1.write('\n') 
 
+f2=open('./htseqedit.txt', 'w+')
+
+for line in open('htseqcounts.txt'):
+	value = line
+	match = re.match("^_",value)
+	if match:
+		continue
+	else:
+		f2.write(line)	
 

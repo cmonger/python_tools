@@ -3,6 +3,7 @@
 #Importing modules
 import sys
 import re
+import os
 
 #Reading the input files
 #file_number= len(sys.argv)-1
@@ -17,15 +18,13 @@ for file in file_names:
 		value= line
 		match= re.match("^(?P<gene>[^\t]+)\t(?P<count>[^\t\n]+)\n$", value)
 		if match:
-			geneStr= match.group("gene")
-			geneStr= str(geneStr)
-			geneCount= match.group("count")
-			geneCount= str(geneCount)
+			geneStr= str(match.group("gene"))
+			geneCount= str(match.group("count"))
 			d[file][geneStr]=geneCount
 
 	
 #Loop through each gene and print the counts for each sample into a file
-f1=open('./htseqcounts.txt', 'w+')
+f1=open('./htseqtemp.txt', 'w+')
 for file in d:
 	f1.write('\t' + file)
 f1.write('\n')
@@ -35,9 +34,9 @@ for gene in d[d.keys()[0]]:
 		f1.write(str(d[file][gene]) + '\t')
 	f1.write('\n') 
 
-f2=open('./htseqedit.txt', 'w+')
+f2=open('./htseqcounts.txt', 'w+')
 
-for line in open('htseqcounts.txt'):
+for line in open('htseqtemp.txt'):
 	value = line
 	match = re.match("^_",value)
 	if match:
@@ -45,3 +44,4 @@ for line in open('htseqcounts.txt'):
 	else:
 		f2.write(line)	
 
+os.remove('htseqtemp.txt')

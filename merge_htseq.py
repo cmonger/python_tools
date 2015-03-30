@@ -3,7 +3,6 @@
 #Importing modules
 import sys
 import re
-import os
 
 #Reading the input files
 #file_number= len(sys.argv)-1

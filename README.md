@@ -13,3 +13,7 @@
 # nucleotideFilter.py
 
 	Biopython script to calculate the percentage of nucleotides per read in a pair and discard both reads in pair if nucleotide % threshold is exceeded
+
+# gtfCDSextender.py
+	
+	Script utilising GTFparse (https://github.com/openvax/gtfparse) to read in a GTF file and extend the CDS regions by user specified amount. Useful for mapping of RiboSeq data to transcripts.

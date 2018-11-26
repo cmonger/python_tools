@@ -1,4 +1,3 @@
-
 #!/usr/bin/python
 
 import sys, getopt, pandas, argparse, warnings
@@ -22,10 +21,12 @@ df=read_gtf(args.input)
 f = open(args.output, 'w')
 #Parse the gtf file to get a each of the transcripts
 df_transcripts=df[df["feature"] == "transcript"]
+#Create a list of all the transcript IDs
+df_transcripts.list = df_transcripts.transcript_id.values.tolist()
 
 #A function to output the GTF file once the cds has been edited later
 def return_CDS_gtf(last_CDS_row_index):
-	for i in range(0,last_CDS_row_index):
+	for i in range(0,last_CDS_row_index+1):
 		f.write(str(CDS.iloc[i,0]) +"\t"+ str(CDS.iloc[i,1])  +"\t"+ str(CDS.iloc[i,2]) +"\t"+ str(CDS.iloc[i,3]) +"\t"+ str(CDS.iloc[i,4]) +"\t.\t" + str(CDS.iloc[i,6]) + "\t.\tgene_id \"" + str(CDS.iloc[i,8]) +"\"; transcript_id \"" + str(CDS.iloc[i,12])+ "\"; ")
 		if (str(CDS.iloc[i].gene_name) != ""):
 			f.write ("gene_name \""+ str(CDS.iloc[i].gene_name + "\"; "))
@@ -41,15 +42,12 @@ def return_CDS_gtf(last_CDS_row_index):
                         f.write ("protein_id \""+ str(CDS.iloc[i].protein_id + "\"; "))
 		f.write("\n")
 
-
 CDScount= 0
 #Loop through each transcript
-for i in range(len((list(df_transcripts.transcript_id)))):
-	#Get the transcript ID using the index above. 
-	transcript=(df_transcripts.iloc[i,12])
-	#Get a slice of the gtf file dataframe containing only lines for the current transcript in the loop
+for i in range (0,(len(df_transcripts.list))):
+	transcript=df_transcripts.list[i]
+	#Get a slice of each transcript
 	df_transcript_gtf=(df[df["transcript_id"] == transcript])
-	
 	#Error check here to see if there is a CDS as some transcripts are non coding or unannotated CDS
 	if ('CDS' in df_transcript_gtf.feature.values):
 		CDScount=CDScount+1
@@ -75,5 +73,4 @@ for i in range(len((list(df_transcripts.transcript_id)))):
 			endCDS=CDS.iloc[last_CDS_row_index,3]-10
 			CDS.iloc[last_CDS_row_index,3]=endCDS
 		return_CDS_gtf(last_CDS_row_index)
-
 print  ("\n\n" + str(i) + " transcripts were in the input GTF. " + str(CDScount) + " of these had a CDS which has been extended and output to the file " + str(args.output))

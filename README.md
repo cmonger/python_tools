@@ -17,3 +17,11 @@
 # gtfCDSextender.py
 	
 	Script utilising GTFparse (https://github.com/openvax/gtfparse) to read in a GTF file and extend the CDS regions by user specified amount. Useful for mapping of RiboSeq data to transcripts.
+
+# aaPercent.py
+
+	Calculate the amino acid % for CDS regions in transcript fasta file
+
+#	codonContext.py
+
+	Calculate the codon context (frequency of codon pairs/ frequency of amino acid pairs encoded by that codon pair) for CDS regions in transcript fasta file

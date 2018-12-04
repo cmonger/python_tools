@@ -39,14 +39,15 @@ dAaPairCounts ={}
 
 #loop through the records
 for record in SeqIO.parse(sys.argv[1] ,"fasta"):
-	for i in (range(0,len(record.seq)/3)):
-		codon=i*3
-		#Check it isnt a stop codon in the first frame
-		if (str(record.seq[codon:codon+3]) != "TAA" or "TAG" or "TGA"):
-			#Sum the codon pairs in the dictionary
-			codonPair= str(record.seq[codon:codon+6])
-			if (len(codonPair) == 6):
-				increaseDictCounts(codonPair,1,dCodonPairCounts)
+	if record.seq.count('N')==0:
+		for i in (range(0,len(record.seq)/3)):
+			codon=i*3
+			#Check it isnt a stop codon in the first frame
+			if (str(record.seq[codon:codon+3]) != "TAA" or "TAG" or "TGA"):
+				#Sum the codon pairs in the dictionary
+				codonPair= str(record.seq[codon:codon+6])
+				if (len(codonPair) == 6):
+					increaseDictCounts(codonPair,1,dCodonPairCounts)
 
 #Translate the codonPair counts to aminoAcid pair counts
 for codonPair,codonPairCount in dCodonPairCounts.items():

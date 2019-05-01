@@ -19,5 +19,3 @@ del d["."]
 for key,val in d.items():
 	print key, val, str((float(100)/float(aaCount)* val)) +"%"
 
-
-test
